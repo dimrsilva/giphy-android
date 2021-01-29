@@ -10,6 +10,9 @@ import androidx.recyclerview.widget.RecyclerView
 import br.com.github.dimrsilva.giphy.application.model.Gif
 import br.com.github.dimrsilva.giphy.databinding.SearchItemBinding
 import com.danikula.videocache.HttpProxyCacheServer
+import com.google.android.exoplayer2.MediaItem
+import com.google.android.exoplayer2.Player
+import com.google.android.exoplayer2.SimpleExoPlayer
 
 class SearchAdapter(
     private val proxy: HttpProxyCacheServer
@@ -22,21 +25,24 @@ class SearchAdapter(
 
     override fun onBindViewHolder(holder: SearchViewHolder, position: Int) {
         getItem(position)?.let {
-            val params = holder.binding.videoView.layoutParams as ConstraintLayout.LayoutParams
+            val params = holder.binding.textureView.layoutParams as ConstraintLayout.LayoutParams
             params.dimensionRatio = "${it.width}:${it.height}"
-            holder.binding.videoView.requestLayout()
-            val video = Uri.parse(proxy.getProxyUrl(it.mp4Url))
-            holder.binding.videoView.setVideoURI(video)
-            holder.binding.videoView.setOnPreparedListener { mediaPlayer ->
-                mediaPlayer.isLooping = true
-                holder.binding.videoView.start()
-            }
+            holder.binding.textureView.requestLayout()
+            val mediaItem = MediaItem.fromUri(proxy.getProxyUrl(it.mp4Url))
+            holder.player.setMediaItem(mediaItem)
+            holder.player.repeatMode = Player.REPEAT_MODE_ONE
+            holder.player.prepare()
+            holder.player.play()
         }
     }
 
     class SearchViewHolder(
         val binding: SearchItemBinding
-    ) : RecyclerView.ViewHolder(binding.root)
+    ) : RecyclerView.ViewHolder(binding.root) {
+        val player = SimpleExoPlayer.Builder(binding.root.context).build().also {
+            it.setVideoTextureView(binding.textureView)
+        }
+    }
 
     class SearchDiffCallback : DiffUtil.ItemCallback<Gif>() {
         override fun areItemsTheSame(oldItem: Gif, newItem: Gif): Boolean {

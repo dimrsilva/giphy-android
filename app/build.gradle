@@ -55,6 +55,7 @@ dependencies {
     implementation "org.koin:koin-android-viewmodel:2.2.2"
 
     implementation 'com.danikula:videocache:2.7.1'
+    implementation 'com.google.android.exoplayer:exoplayer:2.12.3'
 
     testImplementation 'junit:junit:4.13.1'
 
