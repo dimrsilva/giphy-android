@@ -1,32 +1,17 @@
 package br.com.github.dimrsilva.giphy.application.http
 
 import br.com.github.dimrsilva.giphy.application.http.api.GiphyApi
-import br.com.github.dimrsilva.giphy.application.http.api.GiphyResultPayload
-import br.com.github.dimrsilva.giphy.application.model.Gif
+import br.com.github.dimrsilva.giphy.application.http.api.GiphyResultPayloadMapper
 import br.com.github.dimrsilva.giphy.application.model.GifListResult
 import retrofit2.await
 
 class TrendingGifsEndpoint(
+    private val mapper: GiphyResultPayloadMapper,
     private val giphyApi: GiphyApi,
 ) {
     suspend fun call(limit: Int, offset: Int): GifListResult {
         return giphyApi.trending(limit, offset).await().let { payload ->
-            GifListResult(
-                gifs = payload.data.mapIndexed { index, giphy -> giphy.toGiphy(index + payload.pagination.offset) },
-                offset = payload.pagination.offset,
-                totalCount = payload.pagination.totalCount
-            )
+            mapper.map(payload)
         }
     }
-
-    private fun GiphyResultPayload.GiphyPayload.toGiphy(index: Int) =
-        Gif(
-            index = index,
-            id = id,
-            url = url,
-            mp4Url = images.fixedWidth.mp4,
-            width = images.fixedWidth.width,
-            height = images.fixedWidth.height,
-            isFavorite = false,
-        )
 }

@@ -3,6 +3,7 @@ package br.com.github.dimrsilva.giphy.application
 import br.com.github.dimrsilva.giphy.application.http.TrendingGifsEndpoint
 import br.com.github.dimrsilva.giphy.application.http.api.GiphyApi
 import br.com.github.dimrsilva.giphy.application.http.api.GiphyInterceptor
+import br.com.github.dimrsilva.giphy.application.http.api.GiphyResultPayloadMapper
 import br.com.github.dimrsilva.giphy.application.usecase.LoadTrendingGifsUseCase
 import okhttp3.OkHttpClient
 import org.koin.dsl.module
@@ -25,7 +26,8 @@ private val httpModule = module {
 
     factory { get<Retrofit>().create(GiphyApi::class.java) }
 
-    factory { TrendingGifsEndpoint(get()) }
+    factory { GiphyResultPayloadMapper() }
+    factory { TrendingGifsEndpoint(get(), get()) }
 }
 
 private val useCaseModule = module {

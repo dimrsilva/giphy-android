@@ -9,8 +9,8 @@ private val presentationModule = module {
     single { HttpProxyCacheServer(get()) }
 }
 
-private val viewModelModule = module {
+private val searchModule = module {
     viewModel { SearchViewModel(get()) }
 }
 
-val presentationModules = listOf(presentationModule, viewModelModule)
+val presentationModules = listOf(presentationModule, searchModule)
