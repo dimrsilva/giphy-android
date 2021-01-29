@@ -19,5 +19,14 @@ class TrendingGifsEndpoint(
         }
     }
 
-    private fun GiphyResultPayload.GiphyPayload.toGiphy(index: Int) = Gif(index, id, url, false)
+    private fun GiphyResultPayload.GiphyPayload.toGiphy(index: Int) =
+        Gif(
+            index = index,
+            id = id,
+            url = url,
+            mp4Url = images.fixedWidth.mp4,
+            width = images.fixedWidth.width,
+            height = images.fixedWidth.height,
+            isFavorite = false,
+        )
 }

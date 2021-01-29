@@ -12,6 +12,19 @@ data class GiphyResultPayload(
     data class GiphyPayload(
         @Json(name = "id") val id: String,
         @Json(name = "url") val url: String,
+        @Json(name = "images") val images: ImagesPayload,
+    )
+
+    @JsonClass(generateAdapter = true)
+    data class ImagesPayload(
+        @Json(name = "fixed_width") val fixedWidth: Mp4Payload,
+    )
+
+    @JsonClass(generateAdapter = true)
+    data class Mp4Payload(
+        @Json(name = "mp4") val mp4: String,
+        @Json(name = "width") val width: Int,
+        @Json(name = "height") val height: Int,
     )
 
     @JsonClass(generateAdapter = true)
