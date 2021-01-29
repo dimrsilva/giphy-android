@@ -1,4 +1,4 @@
-package br.com.github.dimrsilva.giphy.application.http.api
+package br.com.github.dimrsilva.giphy.infrastructure.http
 
 import android.provider.Settings
 import okhttp3.Interceptor
