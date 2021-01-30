@@ -10,13 +10,13 @@ import androidx.recyclerview.widget.RecyclerView
 import br.com.github.dimrsilva.giphy.R
 import br.com.github.dimrsilva.giphy.application.model.Gif
 import br.com.github.dimrsilva.giphy.databinding.SearchItemBinding
-import com.danikula.videocache.HttpProxyCacheServer
 import com.google.android.exoplayer2.MediaItem
 import com.google.android.exoplayer2.Player
 import com.google.android.exoplayer2.SimpleExoPlayer
+import com.google.android.exoplayer2.source.MediaSourceFactory
 
 class GifListAdapter(
-    private val proxy: HttpProxyCacheServer,
+    private val mediaSourceFactory: MediaSourceFactory,
     private val onToggleFavorite: (Int, Gif) -> Unit,
 ) : PagedListAdapter<Gif, GifListAdapter.SearchViewHolder>(SearchDiffCallback()) {
 
@@ -30,9 +30,9 @@ class GifListAdapter(
             val params = holder.binding.textureView.layoutParams as ConstraintLayout.LayoutParams
             params.dimensionRatio = "${gif.width}:${gif.height}"
             holder.binding.textureView.requestLayout()
-            val mediaItem = MediaItem.fromUri(proxy.getProxyUrl(gif.mp4Url))
-            holder.player.setMediaItem(mediaItem)
+            val mediaItem = MediaItem.fromUri(gif.mp4Url)
             holder.player.repeatMode = Player.REPEAT_MODE_ONE
+            holder.player.setMediaSource(mediaSourceFactory.createMediaSource(mediaItem))
             holder.player.prepare()
             holder.player.play()
             val drawableRes = if (gif.isFavorite) {
@@ -49,10 +49,11 @@ class GifListAdapter(
         }
     }
 
-    class SearchViewHolder(
+    inner class SearchViewHolder(
         val binding: SearchItemBinding
     ) : RecyclerView.ViewHolder(binding.root) {
-        val player = SimpleExoPlayer.Builder(binding.root.context).build().also {
+        val player = SimpleExoPlayer.Builder(binding.root.context)
+            .build().also {
             it.setVideoTextureView(binding.textureView)
         }
     }

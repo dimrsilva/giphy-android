@@ -41,7 +41,7 @@ class GiphyResultPayloadMapperTest {
             url = "url",
             mp4Url = "mp4",
             width = 100,
-            height = 100,
+            height = 200,
             isFavorite = false,
         )), result.gifs)
         assertEquals(0, result.offset)
@@ -49,9 +49,17 @@ class GiphyResultPayloadMapperTest {
     }
 
     @Test
-    fun whenHasOffsetShouldReturnIndexesWithOffset() {
+    fun whenNullFixedWidthMp4ShouldReturnOriginal() {
         val payload = GiphyResultPayload(
-            data = listOf(dummy),
+            data = listOf(
+                dummy.copy(
+                    images = dummy.images.copy(
+                        fixedWidth = dummy.images.fixedWidth.copy(
+                            mp4 = null
+                        )
+                    )
+                )
+            ),
             pagination = GiphyResultPayload.PaginationPayload(10, 11)
         )
 
@@ -60,9 +68,9 @@ class GiphyResultPayloadMapperTest {
         assertEquals(listOf(Gif(
             id = "id",
             url = "url",
-            mp4Url = "mp4",
-            width = 100,
-            height = 100,
+            mp4Url = "mp4_original",
+            width = 200,
+            height = 400,
             isFavorite = false,
         )), result.gifs)
         assertEquals(10, result.offset)
@@ -77,8 +85,13 @@ class GiphyResultPayloadMapperTest {
                 fixedWidth = GiphyResultPayload.Mp4Payload(
                     mp4 = "mp4",
                     width = 100,
-                    height = 100
-                )
+                    height = 200
+                ),
+                original = GiphyResultPayload.Mp4Payload(
+                    mp4 = "mp4_original",
+                    width = 200,
+                    height = 400
+                ),
             )
         )
     }

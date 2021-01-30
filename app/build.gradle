@@ -34,9 +34,6 @@ android {
     buildFeatures {
         viewBinding true
     }
-    testOptions {
-        unitTests.returnDefaultValues = true
-    }
 }
 
 dependencies {
@@ -57,7 +54,6 @@ dependencies {
 
     implementation "org.koin:koin-android-viewmodel:2.2.2"
 
-    implementation 'com.danikula:videocache:2.7.1'
     implementation 'com.google.android.exoplayer:exoplayer:2.12.3'
 
     implementation "androidx.room:room-runtime:2.2.6"

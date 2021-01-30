@@ -10,14 +10,14 @@ import androidx.lifecycle.viewModelScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import br.com.github.dimrsilva.giphy.databinding.FragmentSearchBinding
 import br.com.github.dimrsilva.giphy.presentation.list.GifListAdapter
-import com.danikula.videocache.HttpProxyCacheServer
+import com.google.android.exoplayer2.source.MediaSourceFactory
 import kotlinx.coroutines.launch
 import org.koin.android.ext.android.inject
 import org.koin.android.viewmodel.ext.android.viewModel
 
 class SearchFragment : Fragment() {
     private val viewModel by viewModel<SearchViewModel>()
-    private val cacheServer by inject<HttpProxyCacheServer>()
+    private val mediaSourceFactory by inject<MediaSourceFactory>()
 
     private var binding: FragmentSearchBinding? = null
 
@@ -29,7 +29,7 @@ class SearchFragment : Fragment() {
         val binding = FragmentSearchBinding.inflate(inflater, container, false)
         this.binding = binding
 
-        val adapter = GifListAdapter(cacheServer) { position, gif ->
+        val adapter = GifListAdapter(mediaSourceFactory) { position, gif ->
             viewModel.viewModelScope.launch {
                 viewModel.toggleFavorite(gif)
                 binding.recyclerView.adapter?.notifyItemChanged(position)

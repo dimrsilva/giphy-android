@@ -9,14 +9,14 @@ import androidx.lifecycle.viewModelScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import br.com.github.dimrsilva.giphy.databinding.FragmentFavoritesBinding
 import br.com.github.dimrsilva.giphy.presentation.list.GifListAdapter
-import com.danikula.videocache.HttpProxyCacheServer
+import com.google.android.exoplayer2.source.MediaSourceFactory
 import kotlinx.coroutines.launch
 import org.koin.android.ext.android.inject
 import org.koin.android.viewmodel.ext.android.viewModel
 
 class FavoritesFragment : Fragment() {
     private val viewModel: FavoritesViewModel by viewModel()
-    private val cacheServer by inject<HttpProxyCacheServer>()
+    private val mediaSourceFactory by inject<MediaSourceFactory>()
 
     private var binding: FragmentFavoritesBinding? = null
 
@@ -28,7 +28,7 @@ class FavoritesFragment : Fragment() {
         val binding = FragmentFavoritesBinding.inflate(inflater, container, false)
         this.binding = binding
 
-        val adapter = GifListAdapter(cacheServer) { position, gif ->
+        val adapter = GifListAdapter(mediaSourceFactory) { _, gif ->
             viewModel.viewModelScope.launch {
                 viewModel.removeFavorite(gif)
                 invalidateData()

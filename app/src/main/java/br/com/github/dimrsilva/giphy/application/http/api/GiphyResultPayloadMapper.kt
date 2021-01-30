@@ -13,12 +13,23 @@ class GiphyResultPayloadMapper {
     }
 
     private fun GiphyResultPayload.GiphyPayload.toGiphy() =
-        Gif(
-            id = id,
-            url = url,
-            mp4Url = images.fixedWidth.mp4,
-            width = images.fixedWidth.width,
-            height = images.fixedWidth.height,
-            isFavorite = false,
-        )
+        if (images.fixedWidth.mp4 != null) {
+            Gif(
+                id = id,
+                url = url,
+                mp4Url = images.fixedWidth.mp4,
+                width = images.fixedWidth.width,
+                height = images.fixedWidth.height,
+                isFavorite = false,
+            )
+        } else {
+            Gif(
+                id = id,
+                url = url,
+                mp4Url = images.original.mp4!!,
+                width = images.original.width,
+                height = images.original.height,
+                isFavorite = false,
+            )
+        }
 }
