@@ -9,9 +9,9 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.viewModelScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import br.com.github.dimrsilva.giphy.databinding.FragmentSearchBinding
+import br.com.github.dimrsilva.giphy.presentation.list.GifListAdapter
 import com.danikula.videocache.HttpProxyCacheServer
 import kotlinx.coroutines.launch
-import org.koin.android.ext.android.bind
 import org.koin.android.ext.android.inject
 import org.koin.android.viewmodel.ext.android.viewModel
 
@@ -19,14 +19,17 @@ class SearchFragment : Fragment() {
     private val viewModel by viewModel<SearchViewModel>()
     private val cacheServer by inject<HttpProxyCacheServer>()
 
+    private var binding: FragmentSearchBinding? = null
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
         val binding = FragmentSearchBinding.inflate(inflater, container, false)
+        this.binding = binding
 
-        val adapter = SearchAdapter(cacheServer) { position, gif ->
+        val adapter = GifListAdapter(cacheServer) { position, gif ->
             viewModel.viewModelScope.launch {
                 viewModel.toggleFavorite(gif)
                 binding.recyclerView.adapter?.notifyItemChanged(position)
@@ -46,5 +49,17 @@ class SearchFragment : Fragment() {
         }
 
         return binding.root
+    }
+
+    override fun onResume() {
+        super.onResume()
+
+        val adapter = binding?.recyclerView?.adapter as? GifListAdapter
+        adapter?.currentList?.dataSource?.invalidate()
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        binding = null
     }
 }

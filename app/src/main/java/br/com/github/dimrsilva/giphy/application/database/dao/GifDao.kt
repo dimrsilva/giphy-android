@@ -1,5 +1,6 @@
 package br.com.github.dimrsilva.giphy.application.database.dao
 
+import androidx.paging.DataSource
 import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
@@ -9,7 +10,7 @@ import br.com.github.dimrsilva.giphy.application.database.entity.GifEntity
 @Dao
 interface GifDao {
     @Query("SELECT * FROM gifs ORDER BY created_at DESC")
-    suspend fun getAll(): List<GifEntity>
+    fun getAll(): DataSource.Factory<Int, GifEntity>
 
     @Query("SELECT id FROM gifs WHERE id IN (:ids)")
     suspend fun getFavorites(ids: List<String>): List<String>

@@ -1,5 +1,6 @@
 package br.com.github.dimrsilva.giphy.application.database.repository
 
+import androidx.paging.DataSource
 import br.com.github.dimrsilva.giphy.application.database.dao.GifDao
 import br.com.github.dimrsilva.giphy.application.database.mapper.GifEntityMapper
 import br.com.github.dimrsilva.giphy.application.model.Gif
@@ -20,7 +21,7 @@ class GifRepository(
         return gifDao.getFavorites(ids)
     }
 
-    suspend fun load(): List<Gif> {
+    fun load(): DataSource.Factory<Int, Gif> {
         return gifDao.getAll().map { mapper.map(it) }
     }
 }

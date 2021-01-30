@@ -1,6 +1,5 @@
-package br.com.github.dimrsilva.giphy.presentation.search
+package br.com.github.dimrsilva.giphy.presentation.list
 
-import android.net.Uri
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.constraintlayout.widget.ConstraintLayout
@@ -16,10 +15,10 @@ import com.google.android.exoplayer2.MediaItem
 import com.google.android.exoplayer2.Player
 import com.google.android.exoplayer2.SimpleExoPlayer
 
-class SearchAdapter(
+class GifListAdapter(
     private val proxy: HttpProxyCacheServer,
     private val onToggleFavorite: (Int, Gif) -> Unit,
-) : PagedListAdapter<Gif, SearchAdapter.SearchViewHolder>(SearchDiffCallback()) {
+) : PagedListAdapter<Gif, GifListAdapter.SearchViewHolder>(SearchDiffCallback()) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): SearchViewHolder {
         val binding = SearchItemBinding.inflate(LayoutInflater.from(parent.context), parent, false)

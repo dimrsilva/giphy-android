@@ -7,6 +7,7 @@ import br.com.github.dimrsilva.giphy.application.http.SearchGifsEndpoint
 import br.com.github.dimrsilva.giphy.application.http.TrendingGifsEndpoint
 import br.com.github.dimrsilva.giphy.application.http.api.GiphyApi
 import br.com.github.dimrsilva.giphy.application.http.api.GiphyResultPayloadMapper
+import br.com.github.dimrsilva.giphy.application.usecase.LoadFavoriteGifsUseCase
 import br.com.github.dimrsilva.giphy.application.usecase.ToggleFavoriteGifUseCase
 import br.com.github.dimrsilva.giphy.application.usecase.LoadTrendingGifsUseCase
 import br.com.github.dimrsilva.giphy.application.usecase.PopulateFavoriteFieldUseCase
@@ -31,6 +32,7 @@ private val httpModule = module {
 }
 
 private val useCaseModule = module {
+    factory { LoadFavoriteGifsUseCase(get()) }
     factory { LoadTrendingGifsUseCase(get(), get()) }
     factory { PopulateFavoriteFieldUseCase(get()) }
     factory { SearchGifsUseCase(get(), get()) }
