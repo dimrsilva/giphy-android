@@ -6,5 +6,5 @@ data class Gif(
     val mp4Url: String,
     val width: Int,
     val height: Int,
-    val isFavorite: Boolean,
+    var isFavorite: Boolean,
 )

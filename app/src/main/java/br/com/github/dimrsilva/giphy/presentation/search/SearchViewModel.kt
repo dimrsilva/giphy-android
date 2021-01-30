@@ -10,6 +10,7 @@ import androidx.paging.toLiveData
 import br.com.github.dimrsilva.giphy.application.model.Gif
 import br.com.github.dimrsilva.giphy.application.usecase.LoadTrendingGifsUseCase
 import br.com.github.dimrsilva.giphy.application.usecase.SearchGifsUseCase
+import br.com.github.dimrsilva.giphy.application.usecase.ToggleFavoriteGifUseCase
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.channels.ConflatedBroadcastChannel
@@ -23,6 +24,7 @@ import org.koin.core.component.KoinComponent
 class SearchViewModel(
     private val loadTrendingGifsUseCase: LoadTrendingGifsUseCase,
     private val searchGifsUseCase: SearchGifsUseCase,
+    private val toggleFavoriteGifUseCase: ToggleFavoriteGifUseCase,
 ) : ViewModel() {
     private var currentDataSource: DataSource<Int, Gif>? = null
     private val searchDataSourceFactory = SearchDataSourceFactory()
@@ -46,6 +48,10 @@ class SearchViewModel(
                     currentDataSource?.invalidate()
                 }
         }
+    }
+
+    suspend fun toggleFavorite(gif: Gif) {
+        toggleFavoriteGifUseCase.toggle(gif)
     }
 
     inner class SearchDataSourceFactory : DataSource.Factory<Int, Gif>() {

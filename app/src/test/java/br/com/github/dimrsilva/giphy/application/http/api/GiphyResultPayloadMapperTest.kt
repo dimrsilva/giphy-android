@@ -37,7 +37,6 @@ class GiphyResultPayloadMapperTest {
         val result = mapper.map(payload)
 
         assertEquals(listOf(Gif(
-            index = 0,
             id = "id",
             url = "url",
             mp4Url = "mp4",
@@ -59,7 +58,6 @@ class GiphyResultPayloadMapperTest {
         val result = mapper.map(payload)
 
         assertEquals(listOf(Gif(
-            index = 10,
             id = "id",
             url = "url",
             mp4Url = "mp4",

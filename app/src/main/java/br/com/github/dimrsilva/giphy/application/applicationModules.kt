@@ -1,13 +1,26 @@
 package br.com.github.dimrsilva.giphy.application
 
+import br.com.github.dimrsilva.giphy.application.database.mapper.GifEntityMapper
+import br.com.github.dimrsilva.giphy.infrastructure.database.GifDatabase
+import br.com.github.dimrsilva.giphy.application.database.repository.GifRepository
 import br.com.github.dimrsilva.giphy.application.http.SearchGifsEndpoint
 import br.com.github.dimrsilva.giphy.application.http.TrendingGifsEndpoint
 import br.com.github.dimrsilva.giphy.application.http.api.GiphyApi
 import br.com.github.dimrsilva.giphy.application.http.api.GiphyResultPayloadMapper
+import br.com.github.dimrsilva.giphy.application.usecase.ToggleFavoriteGifUseCase
 import br.com.github.dimrsilva.giphy.application.usecase.LoadTrendingGifsUseCase
+import br.com.github.dimrsilva.giphy.application.usecase.PopulateFavoriteFieldUseCase
 import br.com.github.dimrsilva.giphy.application.usecase.SearchGifsUseCase
 import org.koin.dsl.module
 import retrofit2.Retrofit
+
+private val databaseModule = module {
+    factory { get<GifDatabase>().gifDao() }
+
+    factory { GifEntityMapper() }
+
+    factory { GifRepository(get(), get()) }
+}
 
 private val httpModule = module {
     factory { get<Retrofit>().create(GiphyApi::class.java) }
@@ -18,8 +31,10 @@ private val httpModule = module {
 }
 
 private val useCaseModule = module {
-    factory { LoadTrendingGifsUseCase(get()) }
-    factory { SearchGifsUseCase(get()) }
+    factory { LoadTrendingGifsUseCase(get(), get()) }
+    factory { PopulateFavoriteFieldUseCase(get()) }
+    factory { SearchGifsUseCase(get(), get()) }
+    factory { ToggleFavoriteGifUseCase(get()) }
 }
 
-val applicationModules = listOf(httpModule, useCaseModule)
+val applicationModules = listOf(databaseModule, httpModule, useCaseModule)

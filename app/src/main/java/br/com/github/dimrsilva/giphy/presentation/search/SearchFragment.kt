@@ -6,9 +6,12 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.core.widget.doOnTextChanged
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.viewModelScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import br.com.github.dimrsilva.giphy.databinding.FragmentSearchBinding
 import com.danikula.videocache.HttpProxyCacheServer
+import kotlinx.coroutines.launch
+import org.koin.android.ext.android.bind
 import org.koin.android.ext.android.inject
 import org.koin.android.viewmodel.ext.android.viewModel
 
@@ -23,7 +26,12 @@ class SearchFragment : Fragment() {
     ): View {
         val binding = FragmentSearchBinding.inflate(inflater, container, false)
 
-        val adapter = SearchAdapter(cacheServer)
+        val adapter = SearchAdapter(cacheServer) { position, gif ->
+            viewModel.viewModelScope.launch {
+                viewModel.toggleFavorite(gif)
+                binding.recyclerView.adapter?.notifyItemChanged(position)
+            }
+        }
         binding.recyclerView.adapter = adapter
         binding.recyclerView.layoutManager = LinearLayoutManager(context)
 
