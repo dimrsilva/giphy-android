@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.viewModelScope
+import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import br.com.github.dimrsilva.giphy.databinding.FragmentFavoritesBinding
 import br.com.github.dimrsilva.giphy.presentation.list.GifListAdapter
@@ -35,7 +36,7 @@ class FavoritesFragment : Fragment() {
             }
         }
         binding.recyclerView.adapter = adapter
-        binding.recyclerView.layoutManager = LinearLayoutManager(context)
+        binding.recyclerView.layoutManager = GridLayoutManager(context, 2)
 
         viewModel.pages.observe(viewLifecycleOwner) {
             adapter.submitList(it)
