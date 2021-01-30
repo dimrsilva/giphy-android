@@ -29,11 +29,8 @@ class SearchFragment : Fragment() {
         val binding = FragmentSearchBinding.inflate(inflater, container, false)
         this.binding = binding
 
-        val adapter = GifListAdapter(mediaSourceFactory) { position, gif ->
-            viewModel.viewModelScope.launch {
-                viewModel.toggleFavorite(gif)
-                binding.recyclerView.adapter?.notifyItemChanged(position)
-            }
+        val adapter = GifListAdapter(mediaSourceFactory) { gif ->
+            viewModel.toggleFavorite(gif)
         }
         binding.recyclerView.adapter = adapter
         binding.recyclerView.layoutManager = LinearLayoutManager(context)

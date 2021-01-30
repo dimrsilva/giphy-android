@@ -17,7 +17,7 @@ import com.google.android.exoplayer2.source.MediaSourceFactory
 
 class GifListAdapter(
     private val mediaSourceFactory: MediaSourceFactory,
-    private val onToggleFavorite: (Int, Gif) -> Unit,
+    private val onToggleFavorite: (Gif) -> Unit,
 ) : PagedListAdapter<Gif, GifListAdapter.SearchViewHolder>(SearchDiffCallback()) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): SearchViewHolder {
@@ -34,7 +34,7 @@ class GifListAdapter(
             holder.player.repeatMode = Player.REPEAT_MODE_ONE
             holder.player.setMediaSource(mediaSourceFactory.createMediaSource(mediaItem))
             holder.player.prepare()
-            holder.player.play()
+
             val drawableRes = if (gif.isFavorite) {
                 R.drawable.ic_baseline_star_24
             } else {
@@ -44,12 +44,30 @@ class GifListAdapter(
                 ContextCompat.getDrawable(holder.binding.buttonFavorite.context, drawableRes)
             )
             holder.binding.buttonFavorite.setOnClickListener {
-                onToggleFavorite.invoke(position, gif)
+                val drawableRes = if (gif.isFavorite) {
+                    R.drawable.ic_baseline_star_outline_24
+                } else {
+                    R.drawable.ic_baseline_star_24
+                }
+                holder.binding.buttonFavorite.setImageDrawable(
+                    ContextCompat.getDrawable(holder.binding.buttonFavorite.context, drawableRes)
+                )
+                onToggleFavorite.invoke(gif)
             }
         }
     }
 
-    inner class SearchViewHolder(
+    override fun onViewDetachedFromWindow(holder: SearchViewHolder) {
+        super.onViewDetachedFromWindow(holder)
+        holder.player.pause()
+    }
+
+    override fun onViewAttachedToWindow(holder: SearchViewHolder) {
+        super.onViewAttachedToWindow(holder)
+        holder.player.play()
+    }
+
+    class SearchViewHolder(
         val binding: SearchItemBinding
     ) : RecyclerView.ViewHolder(binding.root) {
         val player = SimpleExoPlayer.Builder(binding.root.context)

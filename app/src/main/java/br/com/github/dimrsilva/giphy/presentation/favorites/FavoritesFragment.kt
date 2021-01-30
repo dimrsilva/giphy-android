@@ -28,7 +28,7 @@ class FavoritesFragment : Fragment() {
         val binding = FragmentFavoritesBinding.inflate(inflater, container, false)
         this.binding = binding
 
-        val adapter = GifListAdapter(mediaSourceFactory) { _, gif ->
+        val adapter = GifListAdapter(mediaSourceFactory) { gif ->
             viewModel.viewModelScope.launch {
                 viewModel.removeFavorite(gif)
                 invalidateData()

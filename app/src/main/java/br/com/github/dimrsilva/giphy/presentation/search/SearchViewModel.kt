@@ -50,7 +50,7 @@ class SearchViewModel(
         }
     }
 
-    suspend fun toggleFavorite(gif: Gif) {
+    fun toggleFavorite(gif: Gif) = viewModelScope.launch {
         toggleFavoriteGifUseCase.toggle(gif)
     }
 
