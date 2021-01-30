@@ -28,6 +28,8 @@ class SearchViewModel(
     private val searchDataSourceFactory = SearchDataSourceFactory()
     private val searchChannel = ConflatedBroadcastChannel<String>()
 
+    private val _loading = MutableLiveData<Boolean>()
+    val loading: LiveData<Boolean> get() = _loading
     val pages: LiveData<PagedList<Gif>> = searchDataSourceFactory.toLiveData(30)
     val searchTerm = MutableLiveData<String>()
 
@@ -50,9 +52,9 @@ class SearchViewModel(
         override fun create(): DataSource<Int, Gif> {
             val searchTerm = searchTerm.value
             return if (searchTerm.isNullOrBlank()) {
-                TrendingDataSource(viewModelScope, loadTrendingGifsUseCase)
+                TrendingDataSource(viewModelScope, loadTrendingGifsUseCase, _loading)
             } else {
-                SearchDataSource(viewModelScope, searchGifsUseCase, searchTerm)
+                SearchDataSource(viewModelScope, searchGifsUseCase, searchTerm, _loading)
             }.also {
                 currentDataSource = it
             }

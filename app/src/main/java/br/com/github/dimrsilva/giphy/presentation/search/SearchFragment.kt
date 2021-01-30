@@ -27,11 +27,15 @@ class SearchFragment : Fragment() {
         binding.recyclerView.adapter = adapter
         binding.recyclerView.layoutManager = LinearLayoutManager(context)
 
+        binding.editTextSearch.doOnTextChanged { text, _, _, _ -> viewModel.searchTerm.value = text.toString() }
+
+        viewModel.loading.observe(viewLifecycleOwner) {
+            binding.progressBar.visibility = if (it) View.VISIBLE else View.INVISIBLE
+            binding.recyclerView.visibility = if (it) View.INVISIBLE else View.VISIBLE
+        }
         viewModel.pages.observe(viewLifecycleOwner) {
             adapter.submitList(it)
         }
-
-        binding.editTextSearch.doOnTextChanged { text, _, _, _ -> viewModel.searchTerm.value = text.toString() }
 
         return binding.root
     }
