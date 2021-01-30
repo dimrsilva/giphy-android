@@ -17,7 +17,7 @@ data class GiphyResultPayload(
 
     @JsonClass(generateAdapter = true)
     data class ImagesPayload(
-        @Json(name = "fixed_width") val fixedWidth: Mp4Payload,
+        @Json(name = "original") val fixedWidth: Mp4Payload,
     )
 
     @JsonClass(generateAdapter = true)

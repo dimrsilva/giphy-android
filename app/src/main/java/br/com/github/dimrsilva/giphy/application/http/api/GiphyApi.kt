@@ -11,4 +11,11 @@ interface GiphyApi {
         @Query("limit") limit: Int,
         @Query("offset") offset: Int,
     ): Call<GiphyResultPayload>
+
+    @GET("v1/gifs/search")
+    fun search(
+        @Query("q") searchTerm: String,
+        @Query("limit") limit: Int,
+        @Query("offset") offset: Int,
+    ): Call<GiphyResultPayload>
 }

@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.widget.doOnTextChanged
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import br.com.github.dimrsilva.giphy.databinding.FragmentSearchBinding
@@ -29,6 +30,8 @@ class SearchFragment : Fragment() {
         viewModel.pages.observe(viewLifecycleOwner) {
             adapter.submitList(it)
         }
+
+        binding.editTextSearch.doOnTextChanged { text, _, _, _ -> viewModel.searchTerm.value = text.toString() }
 
         return binding.root
     }
