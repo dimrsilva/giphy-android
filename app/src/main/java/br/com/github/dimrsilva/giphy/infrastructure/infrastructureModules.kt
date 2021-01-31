@@ -20,7 +20,7 @@ import retrofit2.converter.moshi.MoshiConverterFactory
 import java.io.File
 
 private val databaseModule = module {
-    factory {
+    single {
         Room.databaseBuilder(get(), GifDatabase::class.java, "gifs")
             .build()
     }
