@@ -1,5 +1,6 @@
 package br.com.github.dimrsilva.giphy.application
 
+import br.com.github.dimrsilva.giphy.application.database.mapper.FavoriteGifTupleMapper
 import br.com.github.dimrsilva.giphy.application.database.mapper.GifEntityMapper
 import br.com.github.dimrsilva.giphy.infrastructure.database.GifDatabase
 import br.com.github.dimrsilva.giphy.application.database.repository.GifRepository
@@ -9,8 +10,6 @@ import br.com.github.dimrsilva.giphy.application.http.api.GiphyApi
 import br.com.github.dimrsilva.giphy.application.http.api.GiphyResultPayloadMapper
 import br.com.github.dimrsilva.giphy.application.usecase.LoadFavoriteGifsUseCase
 import br.com.github.dimrsilva.giphy.application.usecase.ToggleFavoriteGifUseCase
-import br.com.github.dimrsilva.giphy.application.usecase.LoadTrendingGifsUseCase
-import br.com.github.dimrsilva.giphy.application.usecase.PopulateFavoriteFieldUseCase
 import br.com.github.dimrsilva.giphy.application.usecase.SearchGifsUseCase
 import org.koin.dsl.module
 import retrofit2.Retrofit
@@ -19,8 +18,9 @@ private val databaseModule = module {
     factory { get<GifDatabase>().gifDao() }
 
     factory { GifEntityMapper() }
+    factory { FavoriteGifTupleMapper() }
 
-    factory { GifRepository(get(), get()) }
+    factory { GifRepository(get(), get(), get()) }
 }
 
 private val httpModule = module {
@@ -33,9 +33,7 @@ private val httpModule = module {
 
 private val useCaseModule = module {
     factory { LoadFavoriteGifsUseCase(get()) }
-    factory { LoadTrendingGifsUseCase(get(), get()) }
-    factory { PopulateFavoriteFieldUseCase(get()) }
-    factory { SearchGifsUseCase(get(), get()) }
+    factory { SearchGifsUseCase(get(), get(), get()) }
     factory { ToggleFavoriteGifUseCase(get()) }
 }
 

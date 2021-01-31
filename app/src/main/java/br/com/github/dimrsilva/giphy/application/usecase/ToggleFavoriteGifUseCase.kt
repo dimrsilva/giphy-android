@@ -8,10 +8,9 @@ class ToggleFavoriteGifUseCase(
 ) {
     suspend fun toggle(gif: Gif) {
         if (gif.isFavorite) {
-            gifRepository.remove(gif.id)
+            gifRepository.removeFavorite(gif.id)
         } else {
-            gifRepository.save(gif)
+            gifRepository.saveFavorite(gif.id)
         }
-        gif.isFavorite = !gif.isFavorite
     }
 }

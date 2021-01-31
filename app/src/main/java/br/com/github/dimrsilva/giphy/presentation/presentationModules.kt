@@ -10,7 +10,7 @@ private val favoritesModule = module {
 }
 
 private val searchModule = module {
-    viewModel { SearchViewModel(get(), get(), get()) }
+    viewModel { SearchViewModel(get(), get()) }
 }
 
 val presentationModules = listOf(favoritesModule, searchModule)

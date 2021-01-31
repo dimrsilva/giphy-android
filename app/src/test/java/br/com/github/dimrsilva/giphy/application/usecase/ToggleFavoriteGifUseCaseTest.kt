@@ -26,26 +26,22 @@ class ToggleFavoriteGifUseCaseTest {
 
     @Test
     fun whenToggleMarkedShouldRemoveFromRepository() = runBlocking {
-        coEvery { gifRepository.remove("id") } just runs
+        coEvery { gifRepository.removeFavorite("id") } just runs
         val gif = dummy.copy(isFavorite = true)
 
         toggleFavoriteGifUseCase.toggle(gif)
 
-        assertFalse(gif.isFavorite)
-
-        coVerify { gifRepository.remove("id") }
+        coVerify { gifRepository.removeFavorite("id") }
     }
 
     @Test
     fun whenToggleUnmarkedShouldSaveInRepository() = runBlocking {
         val gif = dummy.copy(isFavorite = false)
-        coEvery { gifRepository.save(gif) } just runs
+        coEvery { gifRepository.saveFavorite("id") } just runs
 
         toggleFavoriteGifUseCase.toggle(gif)
 
-        assertTrue(gif.isFavorite)
-
-        coVerify { gifRepository.save(gif) }
+        coVerify { gifRepository.saveFavorite("id") }
     }
 
     companion object {

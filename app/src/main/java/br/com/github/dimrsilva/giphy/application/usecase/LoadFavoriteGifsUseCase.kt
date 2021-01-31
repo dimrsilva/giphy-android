@@ -5,5 +5,5 @@ import br.com.github.dimrsilva.giphy.application.database.repository.GifReposito
 class LoadFavoriteGifsUseCase(
     private val gifRepository: GifRepository,
 ) {
-    fun load() = gifRepository.load()
+    fun load() = gifRepository.getFavoriteEntries()
 }

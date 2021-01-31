@@ -1,21 +1,35 @@
 package br.com.github.dimrsilva.giphy.application.usecase
 
-import br.com.github.dimrsilva.giphy.application.SafeResult
+import br.com.github.dimrsilva.giphy.application.database.repository.GifRepository
 import br.com.github.dimrsilva.giphy.application.http.SearchGifsEndpoint
-import br.com.github.dimrsilva.giphy.application.model.GifListResult
+import br.com.github.dimrsilva.giphy.application.http.TrendingGifsEndpoint
 import br.com.github.dimrsilva.giphy.application.runSafely
 
 class SearchGifsUseCase(
+    private val gifRepository: GifRepository,
     private val searchGifsEndpoint: SearchGifsEndpoint,
-    private val populateFavoriteFieldUseCase: PopulateFavoriteFieldUseCase,
+    private val trendingGifsEndpoint: TrendingGifsEndpoint,
 ) {
-    suspend fun load(searchTerm: String, limit: Int, offset: Int): SafeResult<GifListResult> {
-        return runSafely {
-            val result = searchGifsEndpoint.call(searchTerm, limit, offset)
-            val newGifs = populateFavoriteFieldUseCase.populate(
-                result.gifs
-            )
-            result.copy(gifs = newGifs)
+    fun load() = gifRepository.getSearchEntries()
+
+    suspend fun clearSearchResults() {
+        gifRepository.clearSearchResults()
+    }
+
+    suspend fun loadMoreResults(term: String?) {
+        val offset = gifRepository.lastSearchIndex()?.let { it + 1 } ?: 0
+        runSafely {
+            val result = if (term.isNullOrEmpty()) {
+                trendingGifsEndpoint.call(PAGE_SIZE, offset)
+            } else {
+                searchGifsEndpoint.call(term, PAGE_SIZE, offset)
+            }
+
+            gifRepository.saveSearchResults(result.gifs, offset)
         }
+    }
+
+    companion object {
+        private const val PAGE_SIZE = 30
     }
 }
