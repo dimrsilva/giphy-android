@@ -17,21 +17,17 @@ class GiphyResultPayloadMapperTest {
     fun whenEmptyResultShouldReturnEmptyValue() {
         val payload = GiphyResultPayload(
             data = emptyList(),
-            pagination = GiphyResultPayload.PaginationPayload(0, 0)
         )
 
         val result = mapper.map(payload)
 
-        assertEquals(emptyList<Gif>(), result.gifs)
-        assertEquals(0, result.offset)
-        assertEquals(0, result.totalCount)
+        assertEquals(emptyList<Gif>(), result)
     }
 
     @Test
     fun whenHasResultShouldReturnFilledValues() {
         val payload = GiphyResultPayload(
             data = listOf(dummy),
-            pagination = GiphyResultPayload.PaginationPayload(0, 1)
         )
 
         val result = mapper.map(payload)
@@ -43,9 +39,7 @@ class GiphyResultPayloadMapperTest {
             width = 100,
             height = 200,
             isFavorite = false,
-        )), result.gifs)
-        assertEquals(0, result.offset)
-        assertEquals(1, result.totalCount)
+        )), result)
     }
 
     @Test
@@ -60,7 +54,6 @@ class GiphyResultPayloadMapperTest {
                     )
                 )
             ),
-            pagination = GiphyResultPayload.PaginationPayload(10, 11)
         )
 
         val result = mapper.map(payload)
@@ -72,9 +65,7 @@ class GiphyResultPayloadMapperTest {
             width = 200,
             height = 400,
             isFavorite = false,
-        )), result.gifs)
-        assertEquals(10, result.offset)
-        assertEquals(11, result.totalCount)
+        )), result)
     }
 
     companion object {

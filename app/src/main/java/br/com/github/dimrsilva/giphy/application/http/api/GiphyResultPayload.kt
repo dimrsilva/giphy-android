@@ -6,7 +6,6 @@ import com.squareup.moshi.JsonClass
 @JsonClass(generateAdapter = true)
 data class GiphyResultPayload(
     @Json(name = "data") val data: List<GiphyPayload>,
-    @Json(name = "pagination") val pagination: PaginationPayload,
 ) {
     @JsonClass(generateAdapter = true)
     data class GiphyPayload(
@@ -26,11 +25,5 @@ data class GiphyResultPayload(
         @Json(name = "mp4") val mp4: String?,
         @Json(name = "width") val width: Int,
         @Json(name = "height") val height: Int,
-    )
-
-    @JsonClass(generateAdapter = true)
-    data class PaginationPayload(
-        @Json(name = "offset") val offset: Int,
-        @Json(name = "total_count") val totalCount: Int,
     )
 }

@@ -1,6 +1,7 @@
-package br.com.github.dimrsilva.giphy.application.database.mapper
+package br.com.github.dimrsilva.giphy.application.database.entity
 
 import br.com.github.dimrsilva.giphy.application.database.entity.FavoriteGifTuple
+import br.com.github.dimrsilva.giphy.application.database.entity.FavoriteGifTupleMapper
 import org.junit.Assert.*
 import org.junit.Before
 import org.junit.Test

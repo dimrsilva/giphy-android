@@ -1,6 +1,5 @@
-package br.com.github.dimrsilva.giphy.application.database.mapper
+package br.com.github.dimrsilva.giphy.application.database.entity
 
-import br.com.github.dimrsilva.giphy.application.database.entity.GifEntity
 import br.com.github.dimrsilva.giphy.application.model.Gif
 
 class GifEntityMapper {

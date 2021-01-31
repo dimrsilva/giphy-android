@@ -3,7 +3,6 @@ package br.com.github.dimrsilva.giphy.application.usecase
 import br.com.github.dimrsilva.giphy.application.database.repository.GifRepository
 import br.com.github.dimrsilva.giphy.application.http.SearchGifsEndpoint
 import br.com.github.dimrsilva.giphy.application.http.TrendingGifsEndpoint
-import br.com.github.dimrsilva.giphy.application.runSafely
 
 class SearchGifsUseCase(
     private val gifRepository: GifRepository,
@@ -18,15 +17,13 @@ class SearchGifsUseCase(
 
     suspend fun loadMoreResults(term: String?) {
         val offset = gifRepository.lastSearchIndex()?.let { it + 1 } ?: 0
-        runSafely {
-            val result = if (term.isNullOrEmpty()) {
-                trendingGifsEndpoint.call(PAGE_SIZE, offset)
-            } else {
-                searchGifsEndpoint.call(term, PAGE_SIZE, offset)
-            }
-
-            gifRepository.saveSearchResults(result.gifs, offset)
+        val result = if (term.isNullOrEmpty()) {
+            trendingGifsEndpoint.call(PAGE_SIZE, offset)
+        } else {
+            searchGifsEndpoint.call(term, PAGE_SIZE, offset)
         }
+
+        gifRepository.saveSearchResults(result, offset)
     }
 
     companion object {

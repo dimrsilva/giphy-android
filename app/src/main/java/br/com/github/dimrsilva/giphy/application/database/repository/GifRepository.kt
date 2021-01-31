@@ -4,8 +4,8 @@ import androidx.paging.DataSource
 import br.com.github.dimrsilva.giphy.application.database.dao.GifDao
 import br.com.github.dimrsilva.giphy.application.database.entity.FavoriteEntryEntity
 import br.com.github.dimrsilva.giphy.application.database.entity.SearchEntryEntity
-import br.com.github.dimrsilva.giphy.application.database.mapper.FavoriteGifTupleMapper
-import br.com.github.dimrsilva.giphy.application.database.mapper.GifEntityMapper
+import br.com.github.dimrsilva.giphy.application.database.entity.FavoriteGifTupleMapper
+import br.com.github.dimrsilva.giphy.application.database.entity.GifEntityMapper
 import br.com.github.dimrsilva.giphy.application.model.Gif
 
 class GifRepository(

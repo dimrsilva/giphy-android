@@ -1,7 +1,7 @@
 package br.com.github.dimrsilva.giphy.application
 
-import br.com.github.dimrsilva.giphy.application.database.mapper.FavoriteGifTupleMapper
-import br.com.github.dimrsilva.giphy.application.database.mapper.GifEntityMapper
+import br.com.github.dimrsilva.giphy.application.database.entity.FavoriteGifTupleMapper
+import br.com.github.dimrsilva.giphy.application.database.entity.GifEntityMapper
 import br.com.github.dimrsilva.giphy.infrastructure.database.GifDatabase
 import br.com.github.dimrsilva.giphy.application.database.repository.GifRepository
 import br.com.github.dimrsilva.giphy.application.http.SearchGifsEndpoint
