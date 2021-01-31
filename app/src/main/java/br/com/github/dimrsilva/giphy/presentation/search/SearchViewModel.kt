@@ -8,6 +8,7 @@ import androidx.lifecycle.viewModelScope
 import androidx.paging.PagedList
 import androidx.paging.toLiveData
 import br.com.github.dimrsilva.giphy.application.model.Gif
+import br.com.github.dimrsilva.giphy.application.runSafely
 import br.com.github.dimrsilva.giphy.application.usecase.SearchGifsUseCase
 import br.com.github.dimrsilva.giphy.application.usecase.ToggleFavoriteGifUseCase
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -49,14 +50,16 @@ class SearchViewModel(
         override fun onZeroItemsLoaded() {
             viewModelScope.launch {
                 _loading.value = true
-                searchGifsUseCase.loadMoreResults(searchTerm.value)
+                // Not handling any network error for now
+                runSafely { searchGifsUseCase.loadMoreResults(searchTerm.value) }
                 _loading.value = false
             }
         }
 
         override fun onItemAtEndLoaded(itemAtEnd: Gif) {
             viewModelScope.launch {
-                searchGifsUseCase.loadMoreResults(searchTerm.value)
+                // Not handling any network error for now
+                runSafely { searchGifsUseCase.loadMoreResults(searchTerm.value) }
             }
         }
     }
